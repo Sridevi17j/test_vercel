@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify, render_template, Response
 import fal_client
 import os
+from dotenv import load_dotenv
+
 
 app = Flask(__name__)
 
