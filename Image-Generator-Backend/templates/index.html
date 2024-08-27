@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Image Generator</title>
+    <style>
+        body {
+            font-family: Garamond, serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f4f8;
+        }
+        label[for="prompt"] {
+            font-size: 1.2em; /* Increased font size */
+            display: block; /* Ensures the label is on its own line */
+            margin-bottom: 5px; /* Adds some space below the label */
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            font-family: Arial, sans-serif;
+            margin-bottom: 10px; /* Adds some space below the textarea */
+        }
+        button[type="submit"] {
+            font-family: Garamond, serif; /* Matches the body font */
+            font-size: 1em; /* Matches the default body text size */
+            padding: 5px 10px; /* Adds some padding to the button */
+        }
+        #result {
+            margin-top: 20px;
+        }
+        img {
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>AI Image Generator</h1>
+    <form id="promptForm">
+        <label for="prompt">Enter your prompt:</label>
+        <textarea id="prompt" name="prompt" required></textarea>
+        <button type="submit">Generate Image</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('promptForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const prompt = document.getElementById('prompt').value;
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = 'Generating image...';
+
+            try {
+                const response = await fetch('/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ prompt }),
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(`HTTP error! status: ${response.status}, message: ${errorData.error}`);
+                }
+
+                const data = await response.json();
+                const imageUrl = data.images[0].url;
+
+                const img = document.createElement('img');
+                img.src = imageUrl;
+                img.alt = 'Generated image';
+
+                resultDiv.innerHTML = '';
+                resultDiv.appendChild(img);
+            } catch (error) {
+                console.error('Error:', error);
+                resultDiv.textContent = `An error occurred: ${error.message}`;
+            }
+        });
+    </script>
+</body>
+</html>
