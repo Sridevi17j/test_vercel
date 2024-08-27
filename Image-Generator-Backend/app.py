@@ -7,8 +7,8 @@ from dotenv import load_dotenv
 app = Flask(__name__)
 
 # Ensure FAL_KEY is set
-if 'FAL_KEY' not in os.environ:
-    raise ValueError("FAL_KEY environment variable is not set. Please set it and try again.")
+#if 'FAL_KEY' not in os.environ:
+#    raise ValueError("FAL_KEY environment variable is not set. Please set it and try again.")
 
 @app.route('/')
 def index():
