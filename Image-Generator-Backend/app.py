@@ -10,9 +10,9 @@ app = Flask(__name__)
 #if 'FAL_KEY' not in os.environ:
 #    raise ValueError("FAL_KEY environment variable is not set. Please set it and try again.")
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+#@app.route('/')
+#def index():
+#    return render_template('index.html')
 
 @app.route('/generate', methods=['POST'])
 def generate_image():
